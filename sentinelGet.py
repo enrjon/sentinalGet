@@ -1,21 +1,27 @@
 import os
 import requests
+import configparser
+import HTTPDigestAuth
 
 # directories
-workingDir = "SentinelGet"
+workingDir = "sentinelGet"
 rawDir = "raw"
 tiffDir = "tiff"
 
 os.chdir(workingDir)
 
 # credentials
-creds = open("foobar.config")
-username = "testUser"
-password = "testPass"
+config = configparser.ConfigParser()
+config.read("foobar.ini")
+username = config['USER PASSWORD']['username']
+password = config['USER PASSWORD']['password']
 
 # url base
 baseURL = "https://scihub.copernicus.eu/dhus/search?"
 
+#inital request to verify credentials
+from requests.auth import HTTPBasicAuth
+requests.get(baseURL, auth = HTTPBasicAuth(username, password))
 
 #### QUERY PARAMETERS ####
 
